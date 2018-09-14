@@ -1,5 +1,5 @@
 {
-  "name": "appcd-plugin-jdk",
+  "name": "@appcd/plugin-jdk",
   "version": "1.1.0",
   "description": "JDK service for the Appc Daemon",
   "main": "./dist/index",

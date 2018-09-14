@@ -1,5 +1,5 @@
 {
-  "name": "appcd-plugin-titanium-cli",
+  "name": "@appcd/plugin-titanium-cli",
   "version": "1.0.0",
   "description": "Titanium CLI service for the Appc Daemon.",
   "main": "./dist/index",

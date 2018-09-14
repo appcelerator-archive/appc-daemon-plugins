@@ -1,5 +1,5 @@
 {
-  "name": "appcd-plugin-genymotion",
+  "name": "@appcd/plugin-genymotion",
   "version": "1.1.1",
   "description": "Genymotion and VirtualBox service for the Appc Daemon.",
   "main": "./dist/index",

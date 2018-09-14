@@ -1,5 +1,5 @@
 {
-  "name": "appcd-plugin-ios",
+  "name": "@appcd/plugin-ios",
   "version": "1.1.1",
   "description": "iOS service for the Appc Daemon.",
   "main": "./dist/index",

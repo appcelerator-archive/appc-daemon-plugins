@@ -1,5 +1,5 @@
 {
-  "name": "appcd-plugin-system-info",
+  "name": "@appcd/plugin-system-info",
   "version": "1.1.0",
   "description": "The Appc Daemon plugin for detecting system info.",
   "main": "./dist/index",

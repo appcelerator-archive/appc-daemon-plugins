@@ -1,5 +1,5 @@
 {
-  "name": "appcd-plugin-windows",
+  "name": "@appcd/plugin-windows",
   "version": "1.1.0",
   "description": "Windows service for the Appc Daemon.",
   "main": "./dist/index",
