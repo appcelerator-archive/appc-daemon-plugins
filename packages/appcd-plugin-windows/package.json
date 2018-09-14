@@ -24,11 +24,11 @@
     "appcd-gulp": "^1.1.2",
     "gulp": "^3.9.1"
   },
-  "homepage": "https://github.com/appcelerator/appcd-plugin-windows#readme",
-  "bugs": "https://github.com/appcelerator/appcd-plugin-windows/issues",
+  "homepage": "https://github.com/appcelerator/appc-daemon-plugins/tree/master/packages/appcd-plugin-windows",
+  "bugs": "https://github.com/appcelerator/appc-daemon-plugins/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/appcelerator/appcd-plugin-windows.git"
+    "url": "git+https://github.com/appcelerator/appc-daemon-plugins.git"
   },
   "appcd": {
     "appcdVersion": "1.x",

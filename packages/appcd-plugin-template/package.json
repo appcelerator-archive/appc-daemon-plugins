@@ -22,11 +22,11 @@
     "appcd-gulp": "^1.1.2",
     "gulp": "^3.9.1"
   },
-  "homepage": "https://github.com/[ORG]/[PROJECT_NAME]#readme",
-  "bugs": "https://github.com/[ORG]/[PROJECT_NAME]/issues",
+  "homepage": "https://github.com/appcelerator/appc-daemon-plugins/tree/master/packages/appcd-plugin-template",
+  "bugs": "https://github.com/appcelerator/appc-daemon-plugins/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/[ORG]/[PROJECT_NAME].git"
+    "url": "git+https://github.com/appcelerator/appc-daemon-plugins.git"
   },
   "appcd": {
     "appcdVersion": "1.x",
