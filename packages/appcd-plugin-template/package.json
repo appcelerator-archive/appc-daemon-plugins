@@ -1,5 +1,5 @@
 {
-  "name": "[PROJECT_NAME]",
+  "name": "appcd-plugin-replace-with-your-name",
   "version": "0.1.0",
   "description": "DESCRIPTION GOES HERE",
   "main": "./dist/index",
