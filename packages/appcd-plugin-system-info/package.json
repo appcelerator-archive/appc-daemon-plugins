@@ -30,7 +30,7 @@
     "url": "git+https://github.com/appcelerator/appc-daemon-plugins.git"
   },
   "appcd": {
-    "appcdVersion": "1.x",
+    "appcdVersion": "1.x || 2.x",
     "name": "system-info",
     "type": "external"
   }
