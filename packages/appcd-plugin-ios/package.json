@@ -1,0 +1,43 @@
+{
+  "name": "@appcd/plugin-ios",
+  "version": "1.1.1",
+  "description": "iOS service for the Appc Daemon.",
+  "main": "./dist/index",
+  "author": "Appcelerator, Inc. <npmjs@appcelerator.com>",
+  "maintainers": [
+    "Chris Barber <cbarber@appcelerator.com>"
+  ],
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "gulp build",
+    "coverage": "gulp coverage",
+    "docs": "gulp docs",
+    "prepare": "gulp build",
+    "test": "gulp test"
+  },
+  "dependencies": {
+    "gawk": "^4.5.0",
+    "ioslib": "^2.2.3",
+    "semver": "^5.5.0",
+    "source-map-support": "^0.5.6"
+  },
+  "devDependencies": {
+    "appcd-gulp": "^1.1.5",
+    "gulp": "^3.9.1"
+  },
+  "homepage": "https://github.com/appcelerator/appc-daemon-plugins/tree/master/packages/appcd-plugin-ios",
+  "bugs": "https://github.com/appcelerator/appc-daemon-plugins/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appcelerator/appc-daemon-plugins.git"
+  },
+  "appcd": {
+    "appcdVersion": "1.x || 2.x",
+    "config": "./conf/config.js",
+    "name": "ios",
+    "os": [
+      "darwin"
+    ],
+    "type": "external"
+  }
+}
