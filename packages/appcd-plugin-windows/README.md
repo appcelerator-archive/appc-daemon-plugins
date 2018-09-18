@@ -1,4 +1,4 @@
-# appcd-plugin-windows
+# @appcd/plugin-windows
 
 Windows service for the Appc Daemon.
 

@@ -1,4 +1,4 @@
-# appcd-plugin-system-info
+# @appcd/plugin-system-info
 
 Detects system information.
 

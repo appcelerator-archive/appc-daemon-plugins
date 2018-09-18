@@ -1,4 +1,4 @@
-# appcd-plugin-android
+# @appcd/plugin-android
 
 Android service for the Appc Daemon.
 

@@ -1,4 +1,4 @@
-# appcd-plugin-template
+# @appcd/plugin-template
 
 ### Prerequisites
 

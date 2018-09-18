@@ -16,18 +16,15 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "source-map-support": "^0.5.4"
+    "source-map-support": "^0.5.9"
   },
   "devDependencies": {
-    "appcd-gulp": "^1.0.1",
+    "appcd-gulp": "^1.2.0",
     "gulp": "^3.9.1"
   },
   "homepage": "https://github.com/appcelerator/appc-daemon-plugins/tree/master/packages/appcd-plugin-titanium-cli",
   "bugs": "https://github.com/appcelerator/appc-daemon-plugins/issues",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/appcelerator/appc-daemon-plugins.git"
-  },
+  "repository": "https://github.com/appcelerator/appc-daemon-plugins",
   "appcd": {
     "appcdVersion": "1.x || 2.x",
     "config": "./conf/config.js",

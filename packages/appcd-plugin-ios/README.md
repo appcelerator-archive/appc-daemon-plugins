@@ -1,4 +1,4 @@
-# appcd-plugin-ios
+# @appcd/plugin-ios
 
 iOS service for the Appc Daemon.
 
