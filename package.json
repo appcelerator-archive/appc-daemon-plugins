@@ -1,9 +1,9 @@
 {
-  "name": "root",
+  "name": "appc-daemon-plugins",
   "version": "0.0.0",
   "private": true,
   "devDependencies": {
-    "lerna": "^3.3.2"
+    "lerna": "^3.4.0"
   },
   "workspaces": {
     "packages": [
