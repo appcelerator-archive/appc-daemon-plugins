@@ -1,4 +1,4 @@
-# appcd-plugin-genymoton
+# @appcd/plugin-genymoton
 
 Genymotion service for the Appc Daemon.
 

@@ -16,20 +16,17 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "gawk": "^4.4.5",
-    "source-map-support": "^0.5.4",
-    "windowslib": "^0.6.5"
+    "gawk": "^4.5.0",
+    "source-map-support": "^0.5.9",
+    "windowslib": "^0.6.7"
   },
   "devDependencies": {
-    "appcd-gulp": "^1.1.2",
+    "appcd-gulp": "^1.2.0",
     "gulp": "^3.9.1"
   },
   "homepage": "https://github.com/appcelerator/appc-daemon-plugins/tree/master/packages/appcd-plugin-windows",
   "bugs": "https://github.com/appcelerator/appc-daemon-plugins/issues",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/appcelerator/appc-daemon-plugins.git"
-  },
+  "repository": "https://github.com/appcelerator/appc-daemon-plugins",
   "appcd": {
     "appcdVersion": "1.x || 2.x",
     "config": "./conf/config.js",

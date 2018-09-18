@@ -1,4 +1,4 @@
-# appcd-plugin-titanium-sdk
+# @appcd/plugin-titanium-sdk
 
 Titanium SDK services for the Appc Daemon.
 

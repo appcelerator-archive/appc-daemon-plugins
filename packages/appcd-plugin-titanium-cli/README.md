@@ -1,3 +1,3 @@
-# appcd-plugin-titanium-cli
+# @appcd/plugin-titanium-cli
 
 Titanium CLI service for the Appc Daemon.

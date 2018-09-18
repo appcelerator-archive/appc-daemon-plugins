@@ -16,24 +16,21 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "fs-extra": "^5.0.0",
-    "gawk": "^4.4.5",
+    "fs-extra": "^7.0.0",
+    "gawk": "^4.5.0",
     "sort-object-keys": "^1.1.2",
-    "source-map-support": "^0.5.4",
+    "source-map-support": "^0.5.9",
     "titaniumlib": "^1.0.0",
     "tmp": "^0.0.33",
-    "yauzl": "^2.9.1"
+    "yauzl": "^2.10.0"
   },
   "devDependencies": {
-    "appcd-gulp": "^1.1.2",
+    "appcd-gulp": "^1.2.0",
     "gulp": "^3.9.1"
   },
   "homepage": "https://github.com/appcelerator/appc-daemon-plugins/tree/master/packages/appcd-plugin-titanium-sdk",
   "bugs": "https://github.com/appcelerator/appc-daemon-plugins/issues",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/appcelerator/appc-daemon-plugins.git"
-  },
+  "repository": "https://github.com/appcelerator/appc-daemon-plugins",
   "appcd": {
     "appcdVersion": "1.x || 2.x",
     "config": "./conf/config.js",
