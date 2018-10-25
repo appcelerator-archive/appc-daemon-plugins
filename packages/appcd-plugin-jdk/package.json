@@ -32,5 +32,8 @@
     "appcdVersion": "1.x || 2.x",
     "name": "jdk",
     "type": "external"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -36,5 +36,8 @@
       "darwin"
     ],
     "type": "external"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

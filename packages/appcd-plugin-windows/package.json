@@ -35,5 +35,8 @@
       "win32"
     ],
     "type": "external"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

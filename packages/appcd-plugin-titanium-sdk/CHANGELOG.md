@@ -1,3 +1,9 @@
+# v1.3.0 (Oct 25, 2018)
+
+ * Moved to `@appcd` scope
+ * Update dependencies
+ * Add Daemon 2.x support
+
 # v1.2.0 (Apr 11, 2018)
 
  * Added service endpoints for listing releases CI branches, CI builds, installing SDKs, and

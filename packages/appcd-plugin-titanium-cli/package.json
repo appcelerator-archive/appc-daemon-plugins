@@ -30,5 +30,8 @@
     "config": "./conf/config.js",
     "name": "titanium-cli",
     "type": "external"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

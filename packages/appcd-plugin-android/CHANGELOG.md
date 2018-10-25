@@ -1,3 +1,9 @@
+# v1.2.0 (Oct 25, 2018)
+
+ * Moved to `@appcd` scope
+ * Update dependencies
+ * Add Daemon 2.x support
+
 # v1.1.0 (Apr 9, 2018)
 
  * Removed `appcd-*` dependencies and locked down the appcd version in the `package.json`.

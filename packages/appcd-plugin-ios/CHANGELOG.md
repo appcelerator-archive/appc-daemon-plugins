@@ -1,3 +1,9 @@
+# v1.2.0 (Oct 25, 2018)
+
+ * Moved to `@appcd` scope
+ * Update dependencies
+ * Add Daemon 2.x support
+
 # v1.1.1 (Aug 6, 2018)
 
  * Updated to ioslib@2.2.3 which adds workaround for sim runtimes that have a bad version number in

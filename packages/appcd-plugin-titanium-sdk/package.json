@@ -36,5 +36,8 @@
     "config": "./conf/config.js",
     "name": "titanium-sdk",
     "type": "external"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

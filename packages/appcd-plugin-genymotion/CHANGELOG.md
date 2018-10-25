@@ -1,3 +1,9 @@
+# v1.2.0 (Oct 25, 2018)
+
+ * Moved to `@appcd` scope
+ * Update dependencies
+ * Add Daemon 2.x support
+
 # v1.1.1 (Apr 13, 2018)
 
  * Fixed detection of new and deleted Genymotion emulators.

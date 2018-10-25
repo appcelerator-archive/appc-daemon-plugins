@@ -30,5 +30,8 @@
     "appcdVersion": "1.x || 2.x",
     "name": "system-info",
     "type": "external"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

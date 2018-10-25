@@ -34,5 +34,8 @@
     "config": "./conf/config.js",
     "name": "genymotion",
     "type": "external"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
