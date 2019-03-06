@@ -16,13 +16,13 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "gawk": "^4.5.0",
-    "source-map-support": "^0.5.9",
-    "windowslib": "^0.6.7"
+    "gawk": "^4.6.2",
+    "source-map-support": "^0.5.10",
+    "windowslib": "^0.6.8"
   },
   "devDependencies": {
-    "appcd-gulp": "^1.2.0",
-    "gulp": "^3.9.1"
+    "appcd-gulp": "^2.0.1",
+    "gulp": "^4.0.0"
   },
   "homepage": "https://github.com/appcelerator/appc-daemon-plugins/tree/master/packages/appcd-plugin-windows",
   "bugs": "https://github.com/appcelerator/appc-daemon-plugins/issues",

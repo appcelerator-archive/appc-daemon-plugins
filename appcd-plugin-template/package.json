@@ -16,11 +16,11 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "source-map-support": "^0.5.9"
+    "source-map-support": "^0.5.10"
   },
   "devDependencies": {
-    "appcd-gulp": "^1.2.0",
-    "gulp": "^3.9.1"
+    "appcd-gulp": "^2.0.1",
+    "gulp": "^4.0.0"
   },
   "homepage": "https://github.com/appcelerator/appc-daemon-plugins/tree/master/packages/appcd-plugin-template",
   "bugs": "https://github.com/appcelerator/appc-daemon-plugins/issues",

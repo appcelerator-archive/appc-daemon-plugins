@@ -3,11 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "devDependencies": {
-    "lerna": "^3.4.0"
+    "lerna": "^3.10.5"
+  },
+  "scripts": {
+    "build": "lerna exec gulp build"
   },
   "workspaces": {
     "packages": [
       "packages/*"
     ]
+  },
+  "dependencies": {
+    "gulp": "^4.0.0"
   }
 }
