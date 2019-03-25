@@ -6,7 +6,8 @@
     "lerna": "^3.10.5"
   },
   "scripts": {
-    "build": "lerna exec gulp build"
+    "build": "lerna exec gulp build",
+    "link": "lerna exec yarn link"
   },
   "workspaces": {
     "packages": [

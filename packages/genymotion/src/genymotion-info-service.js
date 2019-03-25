@@ -131,7 +131,7 @@ export default class GenymotionInfoService extends DataServiceDispatcher {
 			multiple: false,
 			name:     'genymotion',
 			paths,
-			processResults: (results, engine) => {
+			processResults: results => {
 				for (const r of results) {
 					r.virtualbox = this.virtualbox || {};
 				}

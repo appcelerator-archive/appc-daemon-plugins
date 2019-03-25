@@ -266,7 +266,7 @@ export default class iOSInfoService extends DataServiceDispatcher {
 			depth: 1,
 			multiple: true,
 			paths,
-			async processResults(results, engine) {
+			async processResults(results) {
 				if (results.length > 1) {
 					results.sort((a, b) => {
 						let r = version.compare(a.version, b.version);

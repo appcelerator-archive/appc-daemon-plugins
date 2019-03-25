@@ -1,13 +1,18 @@
-/* istanbul ignore if */
+// istanbul ignore if
 if (!Error.prepareStackTrace) {
 	require('source-map-support/register');
 }
 
-import BuildService from './build-service';
-import ModuleService from './module-service';
-import SDKService from './sdk-service';
+// import fs from 'fs-extra';
+import gawk from 'gawk';
+import CLIService from './cli/cli-service';
+import ModuleService from './module/module-service';
+import SDKService from './sdk/sdk-service';
 
-const buildSvc  = new BuildService();
+import { debounce, get } from 'appcd-util';
+import { modules, options, sdk } from 'titaniumlib';
+
+const cliSvc    = new CLIService();
 const moduleSvc = new ModuleService();
 const sdkSvc    = new SDKService();
 
@@ -18,11 +23,37 @@ const sdkSvc    = new SDKService();
  * @returns {Promise}
  */
 export async function activate(cfg) {
-	await buildSvc.activate(cfg);
-	appcd.register('/build', buildSvc);
+	// set titaniumlib's network settings
+	const { APPCD_NETWORK_CA_FILE, APPCD_NETWORK_PROXY, APPCD_NETWORK_STRICT_SSL } = process.env;
+	const { network } = options;
+	const applySettings = () => {
+		Object.assign(network, cfg.network);
+		if (APPCD_NETWORK_CA_FILE) {
+			network.caFile = APPCD_NETWORK_CA_FILE;
+		}
+		if (APPCD_NETWORK_PROXY) {
+			network.httpProxy = network.httpsProxy = APPCD_NETWORK_PROXY;
+		}
+		if (APPCD_NETWORK_STRICT_SSL !== undefined && APPCD_NETWORK_STRICT_SSL !== 'false') {
+			network.strictSSL = true;
+		}
+	};
+	applySettings();
+	gawk.watch(cfg, [ 'network' ], debounce(applySettings));
+
+	options.searchPaths = get(cfg, 'titanium.searchPaths');
+
+	gawk.watch(cfg, [ 'titanium', 'searchPaths' ], debounce(value => {
+		options.searchPaths = value;
+		moduleSvc.detectEngine.paths = modules.getPaths();
+		sdkSvc.detectEngine.paths = sdk.getPaths();
+	}));
+
+	await cliSvc.activate(cfg);
+	appcd.register('/cli', cliSvc);
 
 	await moduleSvc.activate(cfg);
-	appcd.register('/modules', moduleSvc);
+	appcd.register([ '/module', '/modules' ], moduleSvc);
 
 	await sdkSvc.activate(cfg);
 	appcd.register('/sdk', sdkSvc);
@@ -34,7 +65,9 @@ export async function activate(cfg) {
  * @returns {Promise}
  */
 export async function deactivate() {
-	await buildSvc.deactivate();
-	await moduleSvc.deactivate();
-	await sdkSvc.deactivate();
+	await Promise.all([
+		cliSvc.deactivate(),
+		moduleSvc.deactivate(),
+		sdkSvc.deactivate()
+	]);
 }

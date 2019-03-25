@@ -2,14 +2,15 @@ import DetectEngine from 'appcd-detect';
 import gawk from 'gawk';
 import sortObject from 'sort-object-keys';
 
-import { compare } from './version';
+import { compare } from '../version';
 import { DataServiceDispatcher } from 'appcd-dispatcher';
-import { modules, TitaniumModule } from 'titaniumlib';
+import { debounce, get } from 'appcd-util';
+import { modules, options } from 'titaniumlib';
 
 /**
  * Defines a service endpoint for listing Titanium modules.
  */
-export default class ModuleListInstalledService extends DataServiceDispatcher {
+export default class ModuleListService extends DataServiceDispatcher {
 	/**
 	 * Starts detecting Titanium SDKs and modules.
 	 *
@@ -18,21 +19,29 @@ export default class ModuleListInstalledService extends DataServiceDispatcher {
 	 * @access public
 	 */
 	async activate(cfg) {
-		this.config = cfg;
-		this.data = gawk({});
+		this.data = gawk({
+			android:  {},
+			commonjs: {},
+			ios:      {},
+			windows:  {}
+		});
+
+		options.module.searchPaths = get(cfg, 'titanium.module.searchPaths');
 
 		this.detectEngine = new DetectEngine({
 			checkDir(dir) {
 				try {
-					return new TitaniumModule(dir);
+					console.log(dir);
+					return new modules.TitaniumModule(dir);
 				} catch (e) {
+					console.log(e);
 					// 'dir' is not a Titanium module
 				}
 			},
-			depth:               3,
+			depth:               4, // modules -> platform -> module_name -> version
 			multiple:            true,
 			name:                'titanium-sdk:modules',
-			paths:               modules.locations[process.platform],
+			paths:               modules.getPaths(),
 			recursive:           true,
 			recursiveWatchDepth: 0,
 			redetect:            true,
@@ -64,6 +73,11 @@ export default class ModuleListInstalledService extends DataServiceDispatcher {
 
 			gawk.set(this.data, modules);
 		});
+
+		gawk.watch(cfg, [ 'titanium', 'module', 'searchPaths' ], debounce(value => {
+			options.module.searchPaths = value;
+			this.detectEngine.paths = modules.getPaths();
+		}));
 
 		await this.detectEngine.start();
 	}

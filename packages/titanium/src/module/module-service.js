@@ -1,5 +1,5 @@
 import Dispatcher from 'appcd-dispatcher';
-import ModuleListInstalledService from './module-list-installed-service';
+import ModuleListService from './module-list-service';
 
 import { expandPath } from 'appcd-path';
 import { get, unique } from 'appcd-util';
@@ -19,17 +19,15 @@ export default class ModuleService extends Dispatcher {
 	async activate(cfg) {
 		this.config = cfg;
 
-		this.installed = new ModuleListInstalledService();
+		this.installed = new ModuleListService();
 		await this.installed.activate(cfg);
 
-		this.register([ '/', '/list' ], (ctx, next) => {
-			ctx.path = '/list/installed';
+		this.register('/', (ctx, next) => {
+			ctx.path = '/list';
 			return next();
-		});
-
-		this.register('/list/installed', this.installed);
-
-		this.register('/list/locations', ctx => this.getInstallPaths());
+		})
+			.register('/list',      this.installed)
+			.register('/locations', () => modules.getPaths());
 	}
 
 	/**

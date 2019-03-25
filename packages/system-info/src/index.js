@@ -35,11 +35,10 @@ class SystemInfoService extends DataServiceDispatcher {
 	/**
 	 * Initializes the OS info and subscribes to the various specific information services.
 	 *
-	 * @param {Config} cfg - An Appc Daemon config object.
 	 * @returns {Promise}
 	 * @access public
 	 */
-	activate(cfg) {
+	activate() {
 		this.data = gawk({
 			android: null,
 			genymotion: null,
@@ -134,48 +133,42 @@ class SystemInfoService extends DataServiceDispatcher {
 	 * @returns {Promise}
 	 * @access private
 	 */
-	wireup(type) {
+	async wireup(type) {
 		const endpoint = dependencies[type];
+		const { response } = await appcd.call(endpoint, { type: 'subscribe' });
 
-		return new Promise(resolve => {
-			appcd.call(endpoint, { type: 'subscribe' })
-				.then(({ response }) => {
-					response.on('data', data => {
-						if (data.type === 'subscribe') {
-							this.subscriptions[type] = data.sid;
-						} else if (data.type === 'event' && data.message && typeof data.message === 'object') {
-							const segments = type.split('/');
-							const key = segments.pop();
-							let dest = this.data;
+		response.on('end', () => {
+			delete this.subscriptions[type];
+		});
 
-							for (const segment of segments) {
-								if (!dest[segment]) {
-									dest[segment] = {};
-								}
-								dest = dest[segment];
-							}
+		await new Promise(resolve => {
+			response.on('data', data => {
+				if (data.type === 'subscribe') {
+					this.subscriptions[type] = data.sid;
+				} else if (data.type === 'event' && data.message && typeof data.message === 'object') {
+					const segments = type.split('/');
+					const key = segments.pop();
+					let dest = this.data;
 
-							if (Array.isArray(data.message)) {
-								dest[key] = data.message;
-							} else {
-								if (!dest[key]) {
-									dest[key] = {};
-								}
-								gawk.set(dest[key], data.message);
-							}
-
-							resolve();
+					for (const segment of segments) {
+						if (!dest[segment]) {
+							dest[segment] = {};
 						}
-					});
+						dest = dest[segment];
+					}
 
-					response.on('end', () => {
-						delete this.subscriptions[type];
-					});
-				})
-				.catch(err => {
-					console.error(err);
+					if (Array.isArray(data.message)) {
+						dest[key] = data.message;
+					} else {
+						if (!dest[key]) {
+							dest[key] = {};
+						}
+						gawk.set(dest[key], data.message);
+					}
+
 					resolve();
-				});
+				}
+			});
 		});
 	}
 

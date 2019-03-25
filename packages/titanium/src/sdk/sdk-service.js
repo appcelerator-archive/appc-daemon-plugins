@@ -1,12 +1,9 @@
 import Dispatcher from 'appcd-dispatcher';
-import fs from 'fs-extra';
-import SDKListInstalledService from './sdk-list-installed-service';
 import Response, { AppcdError, codes } from 'appcd-response';
+import SDKListService from './sdk-list-service';
 
 import { expandPath } from 'appcd-path';
-import { get } from 'appcd-util';
-import { isFile } from 'appcd-fs';
-import { getInstallPaths, options, sdk } from 'titaniumlib';
+import { sdk } from 'titaniumlib';
 
 /**
  * Defines a service endpoint for listing, installing, and uninstalling Titanium SDKs.
@@ -22,34 +19,20 @@ export default class SDKService extends Dispatcher {
 	async activate(cfg) {
 		this.config = cfg;
 
-		// set titaniumlib's network settings
-		const { APPCD_NETWORK_CA_FILE, APPCD_NETWORK_PROXY, APPCD_NETWORK_STRICT_SSL } = process.env;
-		const { network } = options;
-		Object.assign(network, cfg.network);
-		if (APPCD_NETWORK_CA_FILE && isFile(APPCD_NETWORK_CA_FILE)) {
-			network.ca = fs.readFileSync(APPCD_NETWORK_CA_FILE).toString();
-		}
-		if (APPCD_NETWORK_PROXY) {
-			network.proxy = APPCD_NETWORK_PROXY;
-		}
-		if (APPCD_NETWORK_STRICT_SSL !== undefined && APPCD_NETWORK_STRICT_SSL !== 'false') {
-			network.strictSSL = true;
-		}
-
-		this.installed = new SDKListInstalledService();
+		this.installed = new SDKListService();
 		await this.installed.activate(cfg);
 
-		this.register([ '/', '/list' ], (ctx, next) => {
-			ctx.path = '/list/installed';
+		this.register('/', (ctx, next) => {
+			ctx.path = '/list';
 			return next();
 		})
-			.register('/list/installed',          this.installed)
-			.register('/list/ci-branches',        () => sdk.getBranches())
-			.register('/list/ci-builds/:branch?', ctx => sdk.getBuilds(ctx.request.params.branch))
-			.register('/list/locations',          () => getInstallPaths(get(this.config, 'titanium.sdk.defaultInstallLocation')))
-			.register('/list/releases',           () => sdk.getReleases())
-			.register('/install/:name?',          ctx => this.install(ctx))
-			.register('/uninstall/:name?',        ctx => this.uninstall(ctx));
+			.register('/list',             this.installed)
+			.register('/branches',         () => sdk.getBranches())
+			.register('/builds/:branch?',  ctx => sdk.getBuilds(ctx.request.params.branch))
+			.register('/locations',        () => sdk.getPaths())
+			.register('/releases',         () => sdk.getReleases())
+			.register('/install/:name?',   ctx => this.install(ctx))
+			.register('/uninstall/:name?', ctx => this.uninstall(ctx));
 	}
 
 	/**

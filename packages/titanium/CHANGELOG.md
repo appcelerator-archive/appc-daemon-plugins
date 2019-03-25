@@ -1,3 +1,9 @@
+# v1.4.0
+
+ * Moved SDK install related functions to [titaniumlib](https://www.npmjs.com/package/titaniumlib)
+ * Upgraded to Gulp 4.
+ * Update dependencies
+
 # v1.3.0 (Oct 25, 2018)
 
  * Moved to `@appcd` scope

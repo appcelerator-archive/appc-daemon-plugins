@@ -63,22 +63,20 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 	 * @returns {Promise}
 	 * @access private
 	 */
-	wireupDetection(type, interval, callback) {
-		return callback()
-			.then(result => {
-				if (result) {
-					console.log(`Updating data for ${type}`);
-					gawk.set(this.data[type], result);
-				}
-			})
-			.catch(err => {
-				console.log(err);
-			})
-			.then(() => {
-				this.timers[type] = setTimeout(() => {
-					this.wireupDetection(type, interval, callback);
-				}, interval);
-			});
+	async wireupDetection(type, interval, callback) {
+		try {
+			const result = await callback();
+			if (result) {
+				console.log(`Updating data for ${type}`);
+				gawk.set(this.data[type], result);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+
+		this.timers[type] = setTimeout(() => {
+			this.wireupDetection(type, interval, callback);
+		}, interval);
 	}
 
 	/**
