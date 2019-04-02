@@ -2506,6 +2506,23 @@ cli-kit@^0.7.5:
     source-map-support "^0.5.11"
     which "^1.3.1"
 
+cli-kit@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/cli-kit/-/cli-kit-0.8.0.tgz#bceac661790299e26df2af988746f7a3f8875283"
+  integrity sha512-KAYfyWFUVOJSp7BGtnDlAf0ssdkxH4LHUQ2JSfoErsBsxzdEH5sCAQ2krFnURy+kQWmaKJBDYyo2gbPiGivBww==
+  dependencies:
+    argv-split "^2.0.1"
+    fast-levenshtein "^2.0.6"
+    fs-extra "^7.0.1"
+    hook-emitter "^3.1.2"
+    lodash.camelcase "^4.3.0"
+    pkg-dir "^4.0.0"
+    pluralize "^7.0.0"
+    semver "^6.0.0"
+    snooplogg "^2.0.1"
+    source-map-support "^0.5.11"
+    which "^1.3.1"
+
 cli-width@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
