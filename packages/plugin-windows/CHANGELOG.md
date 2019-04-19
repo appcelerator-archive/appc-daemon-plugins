@@ -1,11 +1,12 @@
 # v1.4.0
 
  * Updated config to remove redundant `windows` namespace.
+ * Update dependencies.
 
 # v1.3.0 (Mar 29, 2019)
 
  * Upgraded to Gulp 4.
- * Update dependencies
+ * Update dependencies.
  * Refactored promises to use async/await.
 
 # v1.2.0 (Oct 25, 2018)

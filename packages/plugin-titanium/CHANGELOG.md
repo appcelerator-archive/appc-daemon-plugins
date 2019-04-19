@@ -5,6 +5,7 @@
  * Fixed version returned by `--version`.
  * Added appcd debug logger and plugin version to exec() data payload.
  * Added the `config` command implementation.
+ * Added the `info` command implementation.
  * Updated npm dependencies.
 
 # v1.4.0 (Mar 29, 2019)

@@ -6,8 +6,9 @@ import version from './version';
 import * as androidlib from 'androidlib';
 
 import { arrayify, debounce, get, mergeDeep } from 'appcd-util';
-import { bat, cmd, exe } from 'appcd-subprocess';
+import { cmd, exe } from 'appcd-subprocess';
 import { DataServiceDispatcher } from 'appcd-dispatcher';
+import { expandPath } from 'appcd-path';
 import { isFile } from 'appcd-fs';
 
 const { gray } = appcdLogger.styles;
@@ -29,9 +30,8 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 		this.data = gawk({
 			devices: [],
 			emulators: [],
-			ndk: [],
-			sdk: [],
-			targets: {}
+			ndks: [],
+			sdks: []
 		});
 
 		/**
@@ -78,7 +78,10 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 	 * @access private
 	 */
 	async initNDKs() {
-		const paths = arrayify(get(this.config, 'android.ndk.searchPaths'), true).concat(androidlib.ndk.ndkLocations[process.platform]);
+		const paths = [
+			...arrayify(get(this.config, 'android.ndk.searchPaths'), true),
+			...androidlib.ndk.ndkLocations[process.platform]
+		];
 
 		this.ndkDetectEngine = new DetectEngine({
 			checkDir(dir) {
@@ -125,7 +128,7 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 
 		// listen for ndk results
 		this.ndkDetectEngine.on('results', results => {
-			gawk.set(this.data.ndk, results);
+			gawk.set(this.data.ndks, results);
 		});
 
 		await this.ndkDetectEngine.start();
@@ -139,7 +142,10 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 	 * @access private
 	 */
 	async initSDKsDevicesAndEmulators() {
-		const paths = arrayify(get(this.config, 'android.sdk.searchPaths'), true).concat(androidlib.sdk.sdkLocations[process.platform]);
+		const paths = [
+			...arrayify(get(this.config, 'android.sdk.searchPaths'), true),
+			...androidlib.sdk.sdkLocations[process.platform]
+		].map(path => expandPath(path));
 
 		this.sdkDetectEngine = new DetectEngine({
 			checkDir(dir) {
@@ -151,20 +157,26 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 			},
 			depth:    1,
 			env:      [ 'ANDROID_SDK', 'ANDROID_SDK_ROOT' ],
-			exe:      [ `../../adb${exe}`, `../../android${bat}` ],
+			exe:      `../../adb${exe}`,
 			multiple: true,
 			name:     'android:sdk',
 			paths,
-			processResults: async (results, engine) => {
+			processResults: async (results) => {
 				// loop over all of the new sdks and set default version
 				if (results.length) {
+					const lookup = {};
 					let foundDefault = false;
+
 					for (const result of results) {
-						if (!foundDefault && (!engine.defaultPath || result.path === engine.defaultPath)) {
-							result.default = true;
+						result.default = false;
+						lookup[result.path] = result;
+					}
+
+					for (const path of paths) {
+						if (lookup[path]) {
+							lookup[path].default = true;
 							foundDefault = true;
-						} else {
-							result.default = false;
+							break;
 						}
 					}
 
@@ -194,14 +206,14 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 
 		// listen for sdk results
 		this.sdkDetectEngine.on('results', results => {
-			gawk.set(this.data.sdk, results);
+			gawk.set(this.data.sdks, results);
 		});
 
 		let initialized = false;
 
 		const rescan = debounce(async () => {
 			console.log('Rescanning Android emulators...');
-			const emus = await androidlib.emulators.getEmulators({ force: true, sdks: this.data.sdk });
+			const emus = await androidlib.emulators.getEmulators({ force: true, sdks: this.data.sdks });
 			console.log(`Found ${emus.length} emulators`);
 			gawk.set(this.data.emulators, emus);
 		});
@@ -232,72 +244,20 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 
 		return new Promise((resolve, reject) => {
 			// if sdks change, then refresh the simulators and update the targets object
-			gawk.watch(this.data.sdk, async () => {
+			gawk.watch(this.data.sdks, async () => {
 				// we need to pause gawk so two events dont fire
 				this.data.__gawk__.pause();
 
 				console.log('Android SDK changed, rescanning emulators');
-				gawk.set(this.data.emulators, await androidlib.emulators.getEmulators({ force: true, sdks: this.data.sdk }));
+				gawk.set(this.data.emulators, await androidlib.emulators.getEmulators({ force: true, sdks: this.data.sdks }));
 
 				let adb = null;
-				let index = 1;
-				const targets = {};
 
-				for (const sdk of this.data.sdk) {
+				for (const sdk of this.data.sdks) {
 					if (adb === null || sdk.default) {
 						adb = sdk.platformTools.executables.adb || null;
 					}
-
-					for (const items of [ sdk.platforms, sdk.addons ]) {
-						for (const item of items) {
-							const abis = [];
-							if (item.abis) {
-								for (const type in item.abis) {
-									/* eslint-disable max-depth */
-									for (const abi of item.abis[type]) {
-										if (abis.indexOf(abi) === -1) {
-											abis.push(abi);
-										}
-									}
-								}
-							}
-
-							const info = {
-								id:          item.sdk,
-								abis:        abis,
-								skins:       item.skins,
-								name:        item.name,
-								type:        item.platform,
-								path:        item.path,
-								revision:    item.revision,
-								androidJar:  item.androidJar,
-								aidl:        item.aidl
-							};
-
-							if (item.basedOn) {
-								// This is an addon
-								info.type = 'add-on';
-								info.vendor = item.vendor;
-								info.description = item.description;
-								info.version = item.basedOn.version || parseInt(String(item.basedOn).replace(/^android-/, '')) || null;
-								info['based-on'] = {
-									'android-version': item.basedOn.version,
-									'api-level': item.basedOn.apiLevel
-								};
-							} else {
-								info.type = 'platform';
-								info['api-level'] = item.apiLevel;
-								info.sdk = item.apiLevel;
-								info.version = item.version;
-							}
-
-							targets[index++] = info;
-						}
-					}
 				}
-
-				// set the targets
-				gawk.set(this.data.targets, targets);
 
 				// if the user set their own adb, then use that instead of the default detected one
 				if (this.userADB) {
@@ -354,7 +314,7 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 					// if there's no results, then the gawk watch above never gets called
 					if (!initialized && results.length === 0) {
 						initialized = true;
-						gawk.set(this.data.emulators, await androidlib.emulators.getEmulators({ force: true, sdks: this.data.sdk }));
+						gawk.set(this.data.emulators, await androidlib.emulators.getEmulators({ force: true, sdks: this.data.sdks }));
 						resolve();
 					}
 				})

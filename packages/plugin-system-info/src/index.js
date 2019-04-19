@@ -19,9 +19,9 @@ import { isFile } from 'appcd-fs';
  * @type {Object}
  */
 const dependencies = {
-	android:            '/android/1.x/info',
+	android:            '/android/2.x/info',
 	genymotion:         '/genymotion/1.x/info',
-	ios:                '/ios/1.x/info',
+	ios:                '/ios/2.x/info',
 	jdks:               '/jdk/1.x/info',
 	'titanium/sdks':    '/titanium/1.x/sdk/list',
 	'titanium/modules': '/titanium/1.x/modules/list',

@@ -16,8 +16,8 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "gawk": "^4.6.2",
-    "source-map-support": "^0.5.11",
+    "gawk": "^4.6.3",
+    "source-map-support": "^0.5.12",
     "windowslib": "^0.6.8"
   },
   "devDependencies": {

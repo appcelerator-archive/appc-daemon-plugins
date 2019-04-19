@@ -16,10 +16,10 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "gawk": "^4.6.2",
+    "gawk": "^4.6.3",
     "jdklib": "^2.4.0",
     "semver": "^6.0.0",
-    "source-map-support": "^0.5.11"
+    "source-map-support": "^0.5.12"
   },
   "devDependencies": {
     "appcd-gulp": "^2.1.0",

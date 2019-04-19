@@ -87,7 +87,8 @@ export default class CLIService extends Dispatcher {
 				})
 			});
 
-			response.end();
+			stdout.end();
+			stderr.end();
 		});
 
 		this.register('/schema', ({ headers }) => this.cli.schema({

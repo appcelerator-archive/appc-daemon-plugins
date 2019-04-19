@@ -1,6 +1,11 @@
-# v1.4.0
+# v2.0.0
 
  * Updated config to remove redundant `android` namespace.
+ * Renamed 'sdk' and 'ndk' to 'sdks' and 'ndks'.
+ * No longer scan for 'android' executable.
+ * Removed 'targets'. Combine 'addons' and 'platforms' to get same result.
+ * Fixed bug with selecting the correct default Android SDK.
+ * Update dependencies.
 
 # v1.3.0 (Mar 29, 2019)
 

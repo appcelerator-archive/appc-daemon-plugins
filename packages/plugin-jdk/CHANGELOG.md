@@ -1,13 +1,17 @@
+# v1.3.1
+
+ * Update dependencies.
+
 # v1.3.0 (Mar 29, 2019)
 
  * Upgraded to Gulp 4.
- * Update dependencies
+ * Update dependencies.
 
 # v1.2.0 (Oct 25, 2018)
 
- * Moved to `@appcd` scope
- * Update dependencies
- * Add Daemon 2.x support
+ * Moved to `@appcd` scope.
+ * Update dependencies.
+ * Add Daemon 2.x support.
 
 # v1.1.0 (Apr 9, 2018)
 

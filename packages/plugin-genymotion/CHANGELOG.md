@@ -1,20 +1,21 @@
 # v1.4.0
 
  * Updated config to remove redundant `genymotion` namespace.
+ * Update dependencies.
 
 # v1.3.0 (Mar 29, 2019)
 
  * Upgraded to Gulp 4.
- * Update dependencies
+ * Update dependencies.
  * Fixed lint warnings.
  * Updated filesystem watching to use new `appcd.fs.watch()` and `appcd.fs.unwatch()` to optimize
    subscriptions. [(DAEMON-253)](https://jira.appcelerator.org/browse/DAEMON-253)
 
 # v1.2.0 (Oct 25, 2018)
 
- * Moved to `@appcd` scope
- * Update dependencies
- * Add Daemon 2.x support
+ * Moved to `@appcd` scope.
+ * Update dependencies.
+ * Add Daemon 2.x support.
 
 # v1.1.1 (Apr 13, 2018)
 

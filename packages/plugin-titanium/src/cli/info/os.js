@@ -74,7 +74,16 @@ export default {
 	},
 
 	render(console, info) {
-		console.log('Operating System');
-		console.log(JSON.stringify(info));
+		const chalk = require('chalk');
+		const filesize = require('filesize');
+		const { bold, magenta } = chalk;
+
+		console.log(bold('Operating System'));
+		console.log(`  Name                  = ${magenta(info.name)}`);
+		console.log(`  Version               = ${magenta(info.version)}`);
+		console.log(`  Architecture          = ${magenta(info.arch === 'x64' ? '64-bit' : '32-bit')}`);
+		console.log(`  # CPUs                = ${magenta(info.numcpus)}`);
+		console.log(`  Memory                = ${magenta(filesize(info.memory))}`);
+		console.log();
 	}
 };

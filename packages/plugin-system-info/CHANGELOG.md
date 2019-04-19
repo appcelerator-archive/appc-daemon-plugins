@@ -1,7 +1,12 @@
+# v2.0.0
+
+ * Schema changes introduced by Android and iOS plugin schema changes.
+ * Update dependencies.
+
 # v1.3.0 (Mar 29, 2019)
 
  * Upgraded to Gulp 4.
- * Update dependencies
+ * Update dependencies.
  * Fixed lint warnings.
  * Refactored promises to use async/await.
  * Initialize the data destination before requesting data from an external plugin.
@@ -11,9 +16,9 @@
 
 # v1.2.0 (Oct 25, 2018)
 
- * Moved to `@appcd` scope
- * Update dependencies
- * Add Daemon 2.x support
+ * Moved to `@appcd` scope.
+ * Update dependencies.
+ * Add Daemon 2.x support.
 
 # v1.1.0 (Apr 11, 2018)
 
