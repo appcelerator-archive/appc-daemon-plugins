@@ -17,11 +17,12 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
-    "cli-kit": "^0.10.2",
+    "cli-kit": "^0.10.3",
     "dateformat": "^3.0.3",
     "filesize": "^4.1.2",
     "fs-extra": "^7.0.1",
     "gawk": "^4.6.3",
+    "gulp": "^4.0.0",
     "pluralize": "^7.0.0",
     "sort-object-keys": "^1.1.2",
     "source-map-support": "^0.5.12",
@@ -31,7 +32,7 @@
   },
   "devDependencies": {
     "appcd-gulp": "^2.1.0",
-    "gulp": "^4.0.0"
+    "gulp": "^4.0.1"
   },
   "homepage": "https://github.com/appcelerator/appc-daemon-plugins/tree/master/packages/plugin-titanium",
   "bugs": "https://github.com/appcelerator/appc-daemon-plugins/issues",

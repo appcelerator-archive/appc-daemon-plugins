@@ -3,8 +3,7 @@ export default {
 	render(console, info) {
 		const dateformat = require('dateformat');
 		const pluralize = require('pluralize');
-		const chalk = require('chalk');
-		const { bold, cyan, gray, magenta } = chalk;
+		const { bold, cyan, gray, magenta } = require('chalk');
 
 		console.log(bold('Xcode'));
 		if (info.xcode) {

@@ -81,7 +81,7 @@ export default class SDKService extends Dispatcher {
 		}
 
 		try {
-			return await sdk.uninstall({ uri });
+			return await sdk.uninstall(uri);
 		} catch (e) {
 			if (e.code === 'ENOTFOUND') {
 				throw new AppcdError(codes.NOT_FOUND, e);

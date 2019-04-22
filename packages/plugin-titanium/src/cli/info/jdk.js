@@ -3,8 +3,7 @@ export default {
 		return (await appcd.call('/jdk/1.x/info')).response;
 	},
 	render(console, info) {
-		const chalk = require('chalk');
-		const { bold, cyan, gray, magenta } = chalk;
+		const { bold, cyan, gray, magenta } = require('chalk');
 
 		console.log(bold('Java Development Kit'));
 		if (info.length) {

@@ -74,9 +74,8 @@ export default {
 	},
 
 	render(console, info) {
-		const chalk = require('chalk');
 		const filesize = require('filesize');
-		const { bold, magenta } = chalk;
+		const { bold, magenta } = require('chalk');
 
 		console.log(bold('Operating System'));
 		console.log(`  Name                  = ${magenta(info.name)}`);

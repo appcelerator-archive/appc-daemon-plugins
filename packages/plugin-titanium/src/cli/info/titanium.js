@@ -13,8 +13,7 @@ export default {
 		};
 	},
 	render(console, info) {
-		const chalk = require('chalk');
-		const { bold, cyan, gray, magenta } = chalk;
+		const { bold, cyan, gray, magenta } = require('chalk');
 
 		console.log(bold('Titanium CLI'));
 		console.log(`  CLI Version           = ${magenta(info.cli.version)}`);

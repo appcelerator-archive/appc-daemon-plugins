@@ -42,21 +42,15 @@ export default {
 		if (argv.json || argv.output === 'json') {
 			console.log(JSON.stringify(results, null, '  '));
 		} else {
-			// render
 			for (const type of Object.keys(results)) {
 				await types[type].render(console, results[type]);
 			}
 		}
 	},
-	desc: 'Display development environment information',
+	desc: 'Display development environment information.',
 	options: {
 		'--json': 'output info as JSON',
-
-		// for backwards compatibility
-		'-o, --output <format>': {
-			hidden: true
-		},
-
+		'-o, --output <format>': { hidden: true },
 		'-t, --types <types>': {
 			default: 'all',
 			desc: 'information types to display; you may select one or more',
