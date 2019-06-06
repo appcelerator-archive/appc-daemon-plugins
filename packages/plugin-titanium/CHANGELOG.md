@@ -1,3 +1,9 @@
+# v1.6.0
+
+ * feat: More info added to `info` command.
+ * chore: Verbiage cleanup.
+ * chore: Updated dependencies.
+
 # v1.5.0 (Jun 6, 2019)
 
  * fix: Updated config to remove redundant `titanium` namespace.
