@@ -22,7 +22,6 @@
     "filesize": "^4.1.2",
     "fs-extra": "^8.1.0",
     "gawk": "^4.6.3",
-    "gulp": "^4.0.0",
     "pluralize": "^8.0.0",
     "sort-object-keys": "^1.1.2",
     "source-map-support": "^0.5.12",
