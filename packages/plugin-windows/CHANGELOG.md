@@ -1,6 +1,8 @@
 # v2.0.0
 
  * BREAKING CHANGE: Removed all Windows Phone related code.
+ * BREAKING CHANGE: Renamed `windows` to `sdks` and `visualstudio` to `vs`in info results.
+ * BREAKING CHANGE: Removed `selectedVisualStudio` from info results.
  * fix: Updated config to remove redundant `windows` namespace.
  * chore: Update dependencies.
 
