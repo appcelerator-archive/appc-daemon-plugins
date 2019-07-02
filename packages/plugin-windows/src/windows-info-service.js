@@ -18,11 +18,8 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 	 */
 	async activate(cfg) {
 		this.data = gawk({
-			devices: [],
-			emulators: {},
 			windows: {},
 			visualstudio: {},
-			windowsphone: {},
 			selectedVisualStudio: {}
 		});
 
@@ -30,16 +27,7 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 
 		// wire up Visual Studio detection first so that we can use its result to know if we should query the other thing
 		await this.wireupDetection('visualstudio', get(cfg, 'windows.visualstudio.pollInterval') || 60000 * 10, () => this.detectVisualStudios());
-
-		await Promise.all([
-			this.wireupDetection('emulators',      get(cfg, 'windows.emulators.pollInterval')    || 60000 * 5,  () => this.detectEmulators()),
-			this.wireupDetection('windows',        get(cfg, 'windows.windowsSDK.pollInterval')   || 60000 / 2,  () => this.detectWindowsSDKs()),
-			this.wireupDetection('windowsphone',   get(cfg, 'windows.windowsPhone.pollInterval') || 60000 / 2,  () => this.detectWindowsPhone())
-		]);
-
-		// wire up devices after the rest to avoid DAEMON-173 where emulator and
-		// device detect functions attempt to build and write wptool at the same time
-		await this.wireupDetection('devices',      get(cfg, 'windows.device.pollInterval')       || 2500,       () => this.detectDevices());
+		await this.wireupDetection('windows',      get(cfg, 'windows.windowsSDK.pollInterval')   || 60000 / 2,  () => this.detectWindowsSDKs());
 	}
 
 	/**

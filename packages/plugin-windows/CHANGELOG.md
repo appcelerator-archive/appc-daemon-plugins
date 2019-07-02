@@ -1,5 +1,7 @@
-# v1.5.0
+# v2.0.0
 
+ * BREAKING CHANGE: Removed all Windows Phone related code.
+ * fix: Updated config to remove redundant `windows` namespace.
  * chore: Update dependencies.
 
 # v1.4.0 (Jun 6, 2019)
