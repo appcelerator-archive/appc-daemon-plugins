@@ -1550,7 +1550,7 @@ appcd-fs@^1.1.6, appcd-fs@^1.1.7:
   dependencies:
     source-map-support "^0.5.12"
 
-appcd-gulp@^2.1.0, appcd-gulp@^2.1.1:
+appcd-gulp@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/appcd-gulp/-/appcd-gulp-2.1.1.tgz#803e4696223a2189b836b21f173647e5183ed6d6"
   integrity sha512-3m4hhQeByDZWYW/MIcivp7/CVHgtCjOf0oBVJMsXDE0DEnF4rWbFbQY7KXZuWm/fxNR7vFtoIf1otVsx7TytIA==
@@ -9664,7 +9664,7 @@ windows-release@^3.1.0:
   dependencies:
     execa "^1.0.0"
 
-windowslib@^0.6.8:
+windowslib@^0.6.9:
   version "0.6.9"
   resolved "https://registry.yarnpkg.com/windowslib/-/windowslib-0.6.9.tgz#e49243afb791242f91a9abec67a029218773d48b"
   integrity sha512-JJ2eJk6q+j0c6s0cq+cG9yXYufDALnoobrzYTO8RhYgDjSMOLUMQkqQZr+/xyU4gh4OFndBZuLUPH6RA669n2g==

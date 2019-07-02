@@ -18,11 +18,10 @@
   "dependencies": {
     "gawk": "^4.6.3",
     "source-map-support": "^0.5.12",
-    "windowslib": "^0.6.8"
+    "windowslib": "^0.6.9"
   },
   "devDependencies": {
-    "appcd-gulp": "^2.1.0",
-    "gulp": "^4.0.0"
+    "appcd-gulp": "^2.1.1"
   },
   "homepage": "https://github.com/appcelerator/appc-daemon-plugins/tree/master/packages/appcd-plugin-windows",
   "bugs": "https://github.com/appcelerator/appc-daemon-plugins/issues",

@@ -92,8 +92,8 @@ export default class iOSInfoService extends DataServiceDispatcher {
 	 * Starts watching for iOS devices being connected and disconnected.
 	 */
 	initDevices() {
-		this.trackDeviceHandle = ioslib.devices
-			.trackDevices()
+		this.watchDeviceHandle = ioslib.devices
+			.watch()
 			.on('devices', devices => {
 				console.log('Devices changed');
 				gawk.set(this.data.devices, devices);
@@ -428,9 +428,9 @@ export default class iOSInfoService extends DataServiceDispatcher {
 	 * @access public
 	 */
 	async deactivate() {
-		if (this.trackDeviceHandle) {
-			this.trackDeviceHandle.stop();
-			this.trackDeviceHandle = null;
+		if (this.watchDeviceHandle) {
+			this.watchDeviceHandle.stop();
+			this.watchDeviceHandle = null;
 		}
 
 		if (this.xcodeDetectEngine) {
