@@ -27,7 +27,7 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 
 		this.data = gawk({
 			sdks: {},
-			vs: {}
+			visualstudio: {}
 		});
 
 		/**
