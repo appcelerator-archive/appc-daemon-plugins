@@ -7,7 +7,7 @@ module.exports = {
 		searchPaths: null
 	},
 
-	vs: {
+	visualstudio: {
 		/**
 		 * A list of paths to search for Visual Studio installations.
 		 * @type {Array.<String>}

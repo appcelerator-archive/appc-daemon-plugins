@@ -1,11 +1,13 @@
 import DetectEngine from 'appcd-detect';
 import gawk from 'gawk';
 import version from './version';
+import winreglib from 'winreglib';
 
 import * as windowslib from 'windowslib';
 
+import { arrayify, debounce, get, mergeDeep } from 'appcd-util';
 import { DataServiceDispatcher } from 'appcd-dispatcher';
-import { arrayify, get, mergeDeep } from 'appcd-util';
+import { expandPath } from 'appcd-path';
 
 /**
  * The Windows info service.
@@ -24,26 +26,23 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 		if (cfg.windows) {
 			mergeDeep(windowslib.options, cfg.windows);
 		}
+		gawk.watch(cfg, 'windows', () => mergeDeep(windowslib.options, cfg.windows || {}));
 
 		this.data = gawk({
 			sdks: {},
-			visualstudio: {}
+			visualstudio: {},
+			vswhere: null
 		});
 
 		/**
-		 * A map of buckets to a list of active fs watch subscription ids.
-		 * @type {Object}
+		 * An array of active Windows Registry watch handles.
+		 * @type {Array.<WatchHandle>}
 		 */
-		this.subscriptions = {};
-
-		/**
-		 * ?
-		 */
-		// this.winregWatchHandles = {};
+		this.registryWatchHandles = [];
 
 		await Promise.all([
-			this.initSDKs() // ,
-			// this.initVisualStudios()
+			this.initSDKs(),
+			this.initVisualStudios()
 		]);
 	}
 
@@ -54,14 +53,16 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 	 * @access public
 	 */
 	async deactivate() {
-		// for (const handle of Object.values(this.winregWatchHandles)) {
-		// 	handle.stop();
-		// }
+		while (this.registryWatchHandles.length) {
+			this.registryWatchHandles.unshift().stop();
+		}
 
 		if (this.sdkDetectEngine) {
 			await this.sdkDetectEngine.stop();
 			this.sdkDetectEngine = null;
 		}
+
+		await appcd.fs.unwatch('visualstudio');
 	}
 
 	/**
@@ -91,11 +92,14 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 			recursive:           true,
 			recursiveWatchDepth: 3,
 			redetect:            true,
-			// registryKeys:        windowslib.sdk.registryKeys.map(key => ({
-			// 	key: new RegExp(key + )
-			// })),
 			watch:               true
 		});
+
+		const rescan = debounce(() => this.sdkDetectEngine.rescan());
+
+		for (const key of windowslib.sdk.registryKeys) {
+			this.registryWatchHandles.push(winreglib.watch(key).on('change', rescan));
+		}
 
 		// listen for sdk results
 		this.sdkDetectEngine.on('results', results => {
@@ -107,6 +111,13 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 		});
 
 		await this.sdkDetectEngine.start();
+
+		gawk.watch(this.config, [ 'windows', 'sdk', 'searchPaths' ], value => {
+			this.sdkDetectEngine.paths = [
+				...arrayify(value, true),
+				windowslib.sdk.defaultPath
+			];
+		});
 	}
 
 	/**
@@ -114,9 +125,61 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 	 *
 	 * @returns {Promise}
 	 * @access private
-	 * /
-	initVisualStudios() {
-		//
+	 */
+	async initVisualStudios() {
+		const detectVS = debounce(async () => {
+			const results = {};
+			const vswhere = await windowslib.vswhere.getVSWhere(true);
+
+			gawk.merge(this.data, { vswhere: vswhere && vswhere.exe || null });
+
+			if (vswhere) {
+				// detect the Visual Studio installations
+				for (const info of await vswhere.query()) {
+					try {
+						// detect MSBuild
+						info.msbuild = (await vswhere.query({
+							requires: 'Microsoft.Component.MSBuild',
+							find:     'MSBuild\\**\\Bin\\MSBuild.exe',
+							version:  info.installationVersion
+						}))[0];
+
+						if (info.isComplete) {
+							const vs = new windowslib.vs.VisualStudio(info);
+							results[vs.version] = vs;
+						}
+					} catch (e) {
+						// squelch
+					}
+				}
+
+				await appcd.fs.watch({
+					type: 'vswhere',
+					paths: [
+						vswhere.exe,
+						expandPath(windowslib.vswhere.defaultPath)
+					],
+					handler: detectVS
+				});
+			} else {
+				await appcd.fs.unwatch('vswhere');
+			}
+
+			gawk.set(this.data.visualstudio, results);
+		});
+
+		await detectVS();
+
+		appcd.fs.watch({
+			type: 'visualstudio',
+			depth: 2,
+			paths: [
+				...arrayify(get(this.config, 'windows.visualstudio.searchPaths'), true),
+				windowslib.vs.defaultPath
+			],
+			handler: detectVS
+		});
+
+		gawk.watch(this.config, [ 'windows' ], detectVS);
 	}
-	*/
 }
