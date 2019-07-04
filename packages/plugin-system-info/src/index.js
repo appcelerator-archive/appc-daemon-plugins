@@ -25,7 +25,7 @@ const dependencies = {
 	jdks:               '/jdk/1.x/info',
 	'titanium/sdks':    '/titanium/1.x/sdk/list',
 	'titanium/modules': '/titanium/1.x/modules/list',
-	windows:            '/windows/1.x/info'
+	windows:            '/windows/2.x/info'
 };
 
 /**

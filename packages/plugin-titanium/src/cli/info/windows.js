@@ -1,17 +1,25 @@
 export default {
-	fetch: process.platform === 'win32' && (async () => (await appcd.call('/windows/1.x/info')).response),
+	fetch: process.platform === 'win32' && (async () => (await appcd.call('/windows/2.x/info')).response),
 	render(console, info) {
 		const { bold, cyan, gray, magenta } = require('chalk');
 
-		console.log(bold('Microsoft® Visual Studio'));
-
+		console.log(bold('Visual Studio'));
 		if (info.visualstudio && Object.keys(info.visualstudio).length) {
-			for (const ver of Object.keys(info.visualstudio).sort()) {
-				const vs = info.visualstudio[ver];
-				console.log(`  ${cyan(ver)}${vs.selected ? gray(' (selected)') : ''}`);
+			for (const [ ver, vs ] of Object.entries(info.visualstudio)) {
+				console.log(`  ${cyan(ver)}`);
+				console.log(`    Name                = ${magenta(vs.name)}`);
 				console.log(`    Path                = ${magenta(vs.path)}`);
-				console.log(`    CLR Version         = ${magenta(vs.clrVersion)}`);
-				console.log(`    MSBuild Version     = ${magenta(`v${vs.msbuildVersion}`)}`);
+			}
+		} else {
+			console.log(gray('  None'));
+		}
+		console.log();
+
+		console.log(bold('Windows SDKs'));
+		if (info.sdks && Object.keys(info.sdks).length) {
+			for (const [ ver, sdk ] of Object.entries(info.sdks)) {
+				console.log(`  ${cyan(ver)}`);
+				console.log(`    Name                = ${magenta(sdk.name)}`);
 			}
 		} else {
 			console.log(gray('  None'));
