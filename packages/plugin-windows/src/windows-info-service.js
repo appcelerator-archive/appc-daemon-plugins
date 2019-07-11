@@ -1,4 +1,4 @@
-import DetectEngine from 'appcd-detect';
+import DetectEngine, { RegistryWatcher } from 'appcd-detect';
 import gawk from 'gawk';
 import version from './version';
 import winreglib from 'winreglib';
@@ -34,12 +34,6 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 			vswhere: null
 		});
 
-		/**
-		 * An array of active Windows Registry watch handles.
-		 * @type {Array.<WatchHandle>}
-		 */
-		this.registryWatchHandles = [];
-
 		await Promise.all([
 			this.initSDKs(),
 			this.initVisualStudios()
@@ -53,9 +47,7 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 	 * @access public
 	 */
 	async deactivate() {
-		while (this.registryWatchHandles.length) {
-			this.registryWatchHandles.unshift().stop();
-		}
+		this.vsRegWatcher.stop();
 
 		if (this.sdkDetectEngine) {
 			await this.sdkDetectEngine.stop();
@@ -92,14 +84,9 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 			recursive:           true,
 			recursiveWatchDepth: 3,
 			redetect:            true,
+			registryKeys:        windowslib.sdk.registryKeys.map(key => ({ key, type: 'rescan' })),
 			watch:               true
 		});
-
-		const rescan = debounce(() => this.sdkDetectEngine.rescan());
-
-		for (const key of windowslib.sdk.registryKeys) {
-			this.registryWatchHandles.push(winreglib.watch(key).on('change', rescan));
-		}
 
 		// listen for sdk results
 		this.sdkDetectEngine.on('results', results => {
@@ -169,6 +156,11 @@ export default class WindowsInfoService extends DataServiceDispatcher {
 		});
 
 		await detectVS();
+
+		this.vsRegWatcher = new RegistryWatcher(
+			Object.entries(windowslib.vs.registrykeys).map(([ key, params ]) => ({ filter: params, key })),
+			detectVS
+		);
 
 		appcd.fs.watch({
 			type: 'visualstudio',

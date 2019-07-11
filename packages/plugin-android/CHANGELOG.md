@@ -4,6 +4,8 @@
  * BREAKING CHANGE: No longer scan for deprecated 'android' executable.
  * BREAKING CHANGE: Removed 'targets'. Combine 'addons' and 'platforms' to get same result.
  * fix: Fixed bug with selecting the correct default Android SDK.
+ * feat: Wired up live configuration changes.
+   [(DAEMON-198)](https://jira.appcelerator.org/browse/DAEMON-198)
  * chore: Update dependencies.
 
 # v1.4.0 (Jun 6, 2019)

@@ -39,7 +39,7 @@ export default {
 		};
 		console.log(bold('Certificates'));
 		console.log(cyan('  Apple WWDR Cert'));
-		if (!info.certs.wwdr) {
+		if (info.certs.wwdr) {
 			console.log('    Installed');
 		} else {
 			console.log(`    Not installed, visit ${magenta('https://developer.apple.com/support/certificates/expiration/')}`);

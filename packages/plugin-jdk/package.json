@@ -16,7 +16,7 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "gawk": "^4.6.3",
+    "gawk": "^4.6.4",
     "jdklib": "^2.4.1",
     "semver": "^6.2.0",
     "source-map-support": "^0.5.12"

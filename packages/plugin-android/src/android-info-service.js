@@ -1,3 +1,5 @@
+/* eslint-disable promise/always-return */
+
 import appcdLogger from 'appcd-logger';
 import DetectEngine from 'appcd-detect';
 import gawk from 'gawk';
@@ -8,7 +10,6 @@ import * as androidlib from 'androidlib';
 import { arrayify, debounce, get, mergeDeep } from 'appcd-util';
 import { cmd, exe } from 'appcd-subprocess';
 import { DataServiceDispatcher } from 'appcd-dispatcher';
-import { expandPath } from 'appcd-path';
 import { isFile } from 'appcd-fs';
 
 const { gray } = appcdLogger.styles;
@@ -61,9 +62,9 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 
 		if (cfg.android) {
 			this.userADB = cfg.android.executables && cfg.android.executables.adb;
-
 			mergeDeep(androidlib.options, cfg.android);
 		}
+		gawk.watch(cfg, 'android', () => mergeDeep(androidlib.options, cfg.android || {}));
 
 		await Promise.all([
 			this.initNDKs(),
@@ -78,11 +79,6 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 	 * @access private
 	 */
 	async initNDKs() {
-		const paths = [
-			...arrayify(get(this.config, 'android.ndk.searchPaths'), true),
-			...androidlib.ndk.ndkLocations[process.platform]
-		];
-
 		this.ndkDetectEngine = new DetectEngine({
 			checkDir(dir) {
 				try {
@@ -96,7 +92,10 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 			exe:      `ndk-build${cmd}`,
 			multiple: true,
 			name:     'android:ndk',
-			paths,
+			paths: [
+				...arrayify(get(this.config, 'android.ndk.searchPaths'), true),
+				...androidlib.ndk.ndkLocations[process.platform]
+			],
 			processResults: async (results, engine) => {
 				if (results.length > 1) {
 					results.sort((a, b) => version.compare(a.version, b.version));
@@ -127,11 +126,16 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 		});
 
 		// listen for ndk results
-		this.ndkDetectEngine.on('results', results => {
-			gawk.set(this.data.ndks, results);
-		});
+		this.ndkDetectEngine.on('results', results => gawk.set(this.data.ndks, results));
 
 		await this.ndkDetectEngine.start();
+
+		gawk.watch(this.config, [ 'android', 'ndk', 'searchPaths' ], value => {
+			this.ndkDetectEngine.paths = [
+				...arrayify(value, true),
+				...androidlib.ndk.ndkLocations[process.platform]
+			];
+		});
 	}
 
 	/**
@@ -142,11 +146,6 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 	 * @access private
 	 */
 	async initSDKsDevicesAndEmulators() {
-		const paths = [
-			...arrayify(get(this.config, 'android.sdk.searchPaths'), true),
-			...androidlib.sdk.sdkLocations[process.platform]
-		].map(path => expandPath(path));
-
 		this.sdkDetectEngine = new DetectEngine({
 			checkDir(dir) {
 				try {
@@ -160,7 +159,10 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 			exe:      `../../adb${exe}`,
 			multiple: true,
 			name:     'android:sdk',
-			paths,
+			paths: [
+				...arrayify(get(this.config, 'android.sdk.searchPaths'), true),
+				...androidlib.sdk.sdkLocations[process.platform]
+			],
 			processResults: async (results) => {
 				// loop over all of the new sdks and set default version
 				if (results.length) {
@@ -172,7 +174,7 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 						lookup[result.path] = result;
 					}
 
-					for (const path of paths) {
+					for (const path of this.sdkDetectEngine.paths) {
 						if (lookup[path]) {
 							lookup[path].default = true;
 							foundDefault = true;
@@ -191,23 +193,19 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 			redetect: true,
 			registryKeys: [
 				{
-					hive: 'HKLM',
-					key: 'SOFTWARE\\Wow6432Node\\Android SDK Tools',
-					name: 'Path'
+					key: 'HKLM\\SOFTWARE\\Wow6432Node\\Android SDK Tools',
+					value: 'Path'
 				},
 				{
-					hive: 'HKLM',
-					key: 'SOFTWARE\\Android Studio',
-					name: 'SdkPath'
+					key: 'HKLM\\SOFTWARE\\Android Studio',
+					value: 'SdkPath'
 				}
 			],
 			watch: true
 		});
 
 		// listen for sdk results
-		this.sdkDetectEngine.on('results', results => {
-			gawk.set(this.data.sdks, results);
-		});
+		this.sdkDetectEngine.on('results', results => gawk.set(this.data.sdks, results));
 
 		let initialized = false;
 
@@ -219,11 +217,11 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 		});
 
 		appcd.fs.watch({
-			type: 'avd',
-			depth: 2,
-			paths: [ androidlib.avd.getAvdDir() ],
 			debounce: true,
-			handler: rescan
+			depth: 2,
+			handler: rescan,
+			paths: [ androidlib.avd.getAvdDir() ],
+			type: 'avd'
 		});
 
 		try {
@@ -232,17 +230,17 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 		} catch (e) {
 			console.warn('Unable to subscribe to Genymotion, reverting to watching the VirtualBox config');
 			appcd.fs.watch({
-				type: 'vboxconf',
+				debounce: true,
+				handler: rescan,
 				depth: 2,
 				paths: [
 					androidlib.virtualbox.virtualBoxConfigFile[process.platform]
 				],
-				debounce: true,
-				handler: rescan
+				type: 'vboxconf'
 			});
 		}
 
-		return new Promise((resolve, reject) => {
+		await new Promise((resolve, reject) => {
 			// if sdks change, then refresh the simulators and update the targets object
 			gawk.watch(this.data.sdks, async () => {
 				// we need to pause gawk so two events dont fire
@@ -311,10 +309,18 @@ export default class AndroidInfoService extends DataServiceDispatcher {
 
 			this.sdkDetectEngine.start()
 				.then(async results => {
+					gawk.watch(this.config, [ 'android', 'sdk', 'searchPaths' ], value => {
+						this.sdkDetectEngine.paths = [
+							...arrayify(value, true),
+							...androidlib.sdk.sdkLocations[process.platform]
+						];
+					});
+
 					// if there's no results, then the gawk watch above never gets called
 					if (!initialized && results.length === 0) {
 						initialized = true;
 						gawk.set(this.data.emulators, await androidlib.emulators.getEmulators({ force: true, sdks: this.data.sdks }));
+
 						resolve();
 					}
 				})

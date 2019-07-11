@@ -64,20 +64,6 @@ module.exports = {
 	},
 
 	genymotion: {
-		executables: {
-			/**
-			 * The path to the genymotion executable.
-			 * @type {String}
-			 */
-			genymotion: null,
-
-			/**
-			 * The path to the genymotion player executable.
-			 * @type {String}
-			 */
-			player: null
-		},
-
 		/**
 		 * A list of paths to search for Genymotion.
 		 * @type {Array.<String>}
@@ -107,15 +93,6 @@ module.exports = {
 		 * @type {String}
 		 */
 		configFile: null,
-
-		executables: {
-
-			/**
-			 * The path to the `vboxmanage` executable.
-			 * @type {String}
-			 */
-			vboxmanage: null,
-		},
 
 		/**
 		 * A list of paths to search for VirtualBox.

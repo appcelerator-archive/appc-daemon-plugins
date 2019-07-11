@@ -16,8 +16,8 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "gawk": "^4.6.3",
-    "ioslib": "^3.0.0",
+    "gawk": "^4.6.4",
+    "ioslib": "^3.1.1",
     "semver": "^6.2.0",
     "source-map-support": "^0.5.12"
   },
