@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "devDependencies": {
-    "lerna": "^3.15.0"
+    "lerna": "^3.16.4"
   },
   "scripts": {
     "build": "lerna exec gulp build",
@@ -16,6 +16,7 @@
     ]
   },
   "dependencies": {
-    "gulp": "^4.0.2"
+    "gulp": "^4.0.2",
+    "node-gyp": "^5.0.3"
   }
 }

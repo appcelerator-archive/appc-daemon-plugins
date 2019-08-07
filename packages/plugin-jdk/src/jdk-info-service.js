@@ -37,35 +37,18 @@ export default class JDKInfoService extends DataServiceDispatcher {
 			paths,
 			processResults: this.processResults.bind(this),
 			redetect:       true,
-			registryKeys: {
-				keys: keys.map(key => ({
-					key: `${key}\\*`,
-					value: 'JavaHome',
-					callback(value, { winreglib }) {
-						try {
-							return {
-								isDefault: winreglib.get(`${key}\\${winreglib.get(key, 'CurrentVersion')}`, 'JavaHome'),
-								value
-							};
-						} catch (e) {
-							return {
-								isDefault: false,
-								value
-							};
-						}
+			registryKeys:   keys.map(key => ({
+				key,
+				depth: 1,
+				value: 'JavaHome',
+				transform(state, { winreglib }) {
+					try {
+						state.isDefault = winreglib.get(`${key}\\${winreglib.get(key, 'CurrentVersion')}`, 'JavaHome');
+					} catch (e) {
+						state.isDefault = false;
 					}
-				})),
-				callback(values) {
-					const result = {};
-					result.paths = values.map(obj => {
-						if (obj.isDefault) {
-							result.defaultPath = obj.value;
-						}
-						return obj.value;
-					});
-					return result;
 				}
-			},
+			})),
 			watch: true
 		});
 

@@ -19,7 +19,7 @@
   "dependencies": {
     "androidlib": "^3.0.0",
     "gawk": "^4.6.4",
-    "source-map-support": "^0.5.12",
+    "source-map-support": "^0.5.13",
     "xmldom": "^0.1.27"
   },
   "devDependencies": {

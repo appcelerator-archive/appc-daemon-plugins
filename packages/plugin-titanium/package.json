@@ -17,14 +17,14 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
-    "cli-kit": "^0.11.1",
+    "cli-kit": "^0.11.2",
     "dateformat": "^3.0.3",
     "filesize": "^4.1.2",
     "fs-extra": "^8.1.0",
     "gawk": "^4.6.4",
     "pluralize": "^8.0.0",
     "sort-object-keys": "^1.1.2",
-    "source-map-support": "^0.5.12",
+    "source-map-support": "^0.5.13",
     "titaniumlib": "^1.4.0",
     "tmp": "^0.1.0",
     "yauzl": "^2.10.0"

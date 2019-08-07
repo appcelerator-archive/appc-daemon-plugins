@@ -18,8 +18,8 @@
   "dependencies": {
     "gawk": "^4.6.4",
     "ioslib": "^3.1.1",
-    "semver": "^6.2.0",
-    "source-map-support": "^0.5.12"
+    "semver": "^6.3.0",
+    "source-map-support": "^0.5.13"
   },
   "devDependencies": {
     "appcd-gulp": "^2.1.1"
