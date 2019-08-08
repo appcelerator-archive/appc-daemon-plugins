@@ -32,8 +32,6 @@ export default class iOSInfoService extends DataServiceDispatcher {
 	 * @access public
 	 */
 	async activate(cfg) {
-		this.config = cfg;
-
 		this.data = gawk({
 			certs: {},
 			devices: [],
@@ -61,6 +59,7 @@ export default class iOSInfoService extends DataServiceDispatcher {
 		if (cfg.ios) {
 			mergeDeep(ioslib.options, cfg.ios);
 		}
+		gawk.watch(cfg, 'ios', () => mergeDeep(ioslib.options, cfg.ios || {}));
 
 		await Promise.all([
 			this.initCerts(),

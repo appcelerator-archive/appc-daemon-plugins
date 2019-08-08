@@ -9,7 +9,7 @@ module.exports = {
 		},
 
 		/**
-		 * The port number ADB is listening.
+		 * The port to connect to ADB.
 		 * @type {Number}
 		 */
 		port: null,
@@ -32,7 +32,7 @@ module.exports = {
 	avd: {
 		/**
 		 * The path to where AVDs are stored.
-		 * @type {Number}
+		 * @type {String}
 		 */
 		path: null
 	},
@@ -49,7 +49,7 @@ module.exports = {
 
 	env: {
 		/**
-		 * An override for the `PATH` environment variable.
+		 * An override for the `PATH` environment variable for androidlib's ADB detection.
 		 * @type {String}
 		 */
 		path: null

@@ -55,6 +55,10 @@ export default class JDKInfoService extends DataServiceDispatcher {
 		this.engine.on('results', results => gawk.set(this.data, results));
 
 		await this.engine.start();
+
+		gawk.watch(cfg, [ 'java', 'searchPaths' ], value => {
+			this.engine.paths = arrayify(value, true).concat(jdkLocations[process.platform]);
+		});
 	}
 
 	/**
