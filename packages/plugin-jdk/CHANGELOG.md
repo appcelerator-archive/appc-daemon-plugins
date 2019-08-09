@@ -1,5 +1,7 @@
 # v1.4.1
 
+ * feat: Wired up live configuration changes.
+   [(DAEMON-198)](https://jira.appcelerator.org/browse/DAEMON-198)
  * chore: Update dependencies.
 
 # v1.4.0 (Jun 6, 2019)

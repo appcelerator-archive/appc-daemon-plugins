@@ -1,6 +1,8 @@
 # v1.6.0
 
  * feat: More info added to `info` command.
+ * feat: Wired up live configuration changes.
+   [(DAEMON-198)](https://jira.appcelerator.org/browse/DAEMON-198)
  * chore: Verbiage cleanup.
  * chore: Updated dependencies.
 

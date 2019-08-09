@@ -1,7 +1,8 @@
 # v2.0.0
 
  * BREAKING CHANGE: Updated to latest `ioslib` v3 which changed the iOS sim watch companion map.
- * fix: Updated config to remove redundant `ios` namespace.
+ * feat: Wired up live configuration changes.
+   [(DAEMON-198)](https://jira.appcelerator.org/browse/DAEMON-198)
  * chore: Update dependencies.
 
 # v1.4.0 (Jun 6, 2019)

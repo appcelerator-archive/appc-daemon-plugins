@@ -3,6 +3,8 @@
  * BREAKING CHANGE: Removed all Windows Phone related code.
  * BREAKING CHANGE: Renamed `windows` to `sdks` in info results.
  * BREAKING CHANGE: Removed `selectedVisualStudio` from info results.
+ * feat: Wired up live configuration changes.
+   [(DAEMON-198)](https://jira.appcelerator.org/browse/DAEMON-198)
  * fix: Updated config to remove redundant `windows` namespace.
  * chore: Update dependencies.
 
