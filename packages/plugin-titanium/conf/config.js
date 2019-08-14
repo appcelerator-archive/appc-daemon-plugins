@@ -1,6 +1,6 @@
 module.exports = {
 	/**
-	 * The default Titanium SDK installation path.
+	 * A list of paths to search for Titanium SDKs.
 	 * @type {Array.<String>}
 	 */
 	searchPaths: []
