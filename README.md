@@ -14,15 +14,27 @@ The plugins are located in separate repos and brought in via git submodules. To 
 begin by forking the individual plugin repo. Next fork or clone this repo and sync the submodules.
 
 ```sh
-$ git clone git@github.com:appcelerator/appc-daemon-plugins.git
-$ cd appc-daemon-plugins
-$ git submodule init
-$ mv .git/config .git/config.bak
-$ sed 's/:appcelerator\//:<YOUR GITHUB USERNAME>\//' .git/config.bak > .git/config
-$ git submodule update
-$ lerna bootstrap
-$ lerna exec yarn link
-$ lerna exec gulp build
+git clone git@github.com:<YOUR GITHUB USERNAME>/appc-daemon-plugins.git
+cd appc-daemon-plugins
+
+git remote add appc git@github.com:appcelerator/appc-daemon-plugins.git
+git submodule init
+
+mv .git/config .git/config.bak
+sed 's/:appcelerator\//:<YOUR GITHUB USERNAME>\//' .git/config.bak > .git/config
+git submodule update
+
+yarn
+yarn run link
+yarn run build
+```
+
+To get the latest changes:
+
+```sh
+git pull appc master
+git submodule update
+yarn
 ```
 
 ## Legal
