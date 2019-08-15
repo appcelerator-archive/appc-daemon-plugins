@@ -1,3 +1,8 @@
+> :warning: THIS REPO HAS MOVED TO https://github.com/appcelerator/appc-daemon
+>
+> Since all of the plugins have been moved out of this repo and into submodules, it made sense to
+> just have the `appc-daemon` repo contain the plugin submodule references.
+
 # Appc Daemon Plugins
 
 This monorepo orchestrates plugins for the [Appc Daemon][1].
